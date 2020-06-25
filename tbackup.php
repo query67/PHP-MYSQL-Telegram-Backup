@@ -26,9 +26,16 @@ $databasepassword = "INSERTHERE";
 $database = "INSERTHERE";
 $tbot_token = "INSERTHERE";
 $tbot_receiver = "INSERTHERE";
+//Zip Password if wish to use it, if not then use "0"
+$zippassword = "0";
 
-//Execute the dump and gzip it
-exec("mysqldump -u".$databaseuser." -p".$databasepassword." ".$database." | gzip > ".$databasedumplocation."");
+
+//Execute the dump and zip it
+if ($zippassword != "0") {
+	exec("mysqldump -u".$databaseuser." -p".$databasepassword." ".$database." | zip --password ".$zippassword." > ".$databasedumplocation."");
+} else {
+	exec("mysqldump -u".$databaseuser." -p".$databasepassword." ".$database." | zip > ".$databasedumplocation."");
+}
 
 //Curl the file to the API
 $file = $databasedumplocation;
